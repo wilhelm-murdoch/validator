@@ -17,7 +17,7 @@ class Rule(object):
 		Keyword arguments:
 		error str -- A user-defined error messaged for a failed rule. (optional)
 		"""
-		print error
+
 		super(Rule, self).__init__()
 		self.error = error
 
@@ -73,7 +73,8 @@ class Field(object):
 		return self
 
 
-	def run(self):
+	def run(self, continue_on_error = True):
+		""" Iterates through all associated rules, executes them and collects the results. """
 		errors = []
 		for rule in self.rules:
 			if not rule.run(self.value):
@@ -123,21 +124,32 @@ class Validator(object):
 		return self.collated_results
 
 
-	def run(self, return_collated_results = False):
+	def run(self, return_collated_results = False, continue_on_error = True):
 		""" Iterates through all associated Fields and applies all attached Rules. Depending on 'return_collated_results',
 		this method will either return True (all rules successful), False (all, or some, rules failed) or a dictionary list
 		containing the collated results of all Field Rules.
 
 		Keyword arguments:
 		return_collated_results bool -- Returns dictionary list of Field Rule collated results.
+		continue_on_error bool -- If set to False, this method will break out upon encountering the first error.
 		"""
 
 		passed = True
 		for field in self.fields:
 			result, errors = field.run()
-			self.collated_results.append({'field': field.title, 'passed': result, 'errors': errors})
+
+			results = {
+				'field': field.title, 
+				'value': field.value, 
+				'passed': result
+			}
+
 			if errors:
 				passed = False
+				results['errors'] = errors
+
+			self.collated_results.append(results)
+
 		if return_collated_results:
 			return self.collated_results
 		return passed
