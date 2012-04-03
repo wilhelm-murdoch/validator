@@ -42,7 +42,7 @@ The following example shows how you would validate a standard user account with 
 
 Here is the output of `results`:
 
->>> print results
+    >>> print results
 
     [{
         'field': 'username',
