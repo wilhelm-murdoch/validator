@@ -13,7 +13,7 @@ class Matches(Rule):
     for password confirmation. """
 
     match = ''
-    """ The value to compare against the associated field's value """
+    """ The value to compare against the associated field's value. """
 
     def __init__(self, match, error = None):
         """ Constructor that instantiates a class instance and properties.

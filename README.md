@@ -1,17 +1,14 @@
-About
-=====
+# About
 
 I wrote this because I could not find a decent validation library for Python. This does precisely what the title suggests; it makes it easier to manage input validation in Python.
 
 There are a handful of other validation libraries out there, but they are all either dated or require you to work your head around some strange syntax. This is the package you want to use when you don't want waste precious time thinking about how the validator should work; it's all in plain English.
 
-Requirements
-============
+# Requirements
 
 Tested on Python 2.6 and 2.7 -- it'll probably work on earlier versions.
 
-Installation
-============
+# Installation
 
 Installing this package should be as easy as doing the following:
 
@@ -19,8 +16,7 @@ Installing this package should be as easy as doing the following:
 
 Once this package gets a bit more polished, it will be submitted to PyPi and you should be able to use `pip` or `easy_install`.
 
-Example
-=======
+# Examples
 
 The following example shows how you would validate a standard user account with `username`, `email` and `password` fields using some built-in validation rules and their default error messages:
 
@@ -45,7 +41,6 @@ The following example shows how you would validate a standard user account with 
 Here is the output of `results`:
 
     >>> print results
-
     [{
         'field': 'username',
         'passed': True,
@@ -64,15 +59,141 @@ Here is the output of `results`:
         'value': 'root'
     }]
 
+# Core
 
-Usage
-=========
+## Validator()
+Responsible for applying rules against the specified fields. Create an instance and start attaching fields to it. Think of a validator instance as a form you want to validate; forms have fields and fields have rules that must be followed.
+### Methods
+#### append(field)
+Attaches an instance, or a list of instances, of class Field to the current instance of a validator.
 
-Supported Rules
-===============
+* @field object|list - A single instance of class Field, or a list of instances.
 
-Extending
-=========
+Returns the current instance of class Validator.
+
+#### results()
+Simply returns the results of the last test run in the following format:
+
+    [{
+        'field': 'field_one',
+        'passed': True,
+        'value': 'foo'
+    }, {
+        'field': 'field_two',
+        'passed': False,
+        'errors': [
+            'Length is too short',
+            'Is not a valid email address',
+            'Some other error'
+        ]
+        'value': 'bar'
+    }]
+
+Returns a list.
+
+#### run(return_collated_results = False)
+Iterates through all the associated fields and forces them to apply rules to their values. Returns True or False depending on whether all fields validated correctly. However, if the parameter `return_collated_results` is set to True, this method will return the results as shown in the `Validator.results()` method.
+
+* @return_collated_results bool - Returns the result list of the validation process if set to True
+
+Returns True, False or list of results.
+
+## Field(title, value, stop_on_first_error = True)
+Represents a single field with a title and associated value. Rules are attached to a field and then applied to the field's value.
+
+* @title str - The title of this field.  
+* @value mixed - The value associated with this field.  
+* @stop_on_first_error bool - Will break out of applying rules when it first encounters an error.  
+
+### Methods
+#### append(rule)
+Attaches an instance, or a list of instances, of class Rule to the current instance of a field.
+
+* @rule object|list - A single instance of class Rule, or a list of instances.
+
+Returns the current instance of class Field.
+
+#### run()
+Iterates through all the associated rules and forces them to apply rules to their values. Returns True or False depending on whether all fields validated correctly. However, if the parameter `return_collated_results` is set to True, this method will return the results as shown in the `Validator.results()` method.
+
+Returns True or False with list of errors.
+
+## Rule(error = None)
+Rules are assigned to fields to test field values. Rules like, "Is this value a number?", "Is this a valid credit card number" or "Does this email address already exist within my database?".
+
+* @error str - Custom error message for a failed rule. (optional)  
+
+### Methods
+#### run
+Defines the rule to apply to a field value. The only requirement is that this method returns either True or False.
+
+# Supported Rules
+
+### Matches(match, error = None)
+Simple rule used to determine whether one value matches another. Commonly used for password confirmation.  
+
+* @match str - The value to compare against the associated field's value.  
+* @error str - Custom error message for a failed rule. (optional)  
+
+### Regex(expression, error = None)
+Applies a regular expression to a given field value.  
+
+* @expression str - The regular expression to be applied against the associated field's value.  
+* @error str - Custom error message for a failed rule. (optional)  
+
+### Regex < IsEmail(error = None)
+Regex convenience derivative class used to determine if given field value is a valid email address.  
+
+* @error str - Custom error message for a failed rule. (optional)  
+
+### Regex < IsNumeric(error = None)
+Regex convenience derivative class used to determine if given field value is numeric-only.  
+
+* @error str - Custom error message for a failed rule. (optional)  
+
+### Regex < IsAlpha(error = None)
+Regex convenience derivative class used to determine if given field value is alpha-only.  
+
+* @error str - Custom error message for a failed rule. (optional)  
+
+### Regex < IsAlphaNumeric(error = None)
+Regex convenience derivative class used to determine if given field value is alpha-numeric.  
+
+* @error str - Custom error message for a failed rule. (optional)  
+
+### Regex < IsRequired(error = None)
+Regex convenience derivative class used to determine if given field is empty.  
+
+* @error str - Custom error message for a failed rule. (optional)  
+
+### IsLength(length, strip = False, error = None)
+Used to determine whether the given associated field value's character length equals the given maximum amount.  
+
+* @length int - Absolute maximum character length.  
+* @strip bool - Used to strip whitespace from the given field value. (optional)  
+* @error str - Custom error message for a failed rule. (optional)  
+
+### IsLengthBetween(min, max, strip = False, error = None)
+Used to determine whether the given associated field value's character length is within the given range.  
+
+* @min int - Absolute minimum character length.  
+* @max int - Absolute maximum character length.  
+* @strip bool - Used to strip whitespace from the given field value. (optional)  
+* @error str - A user-defined error messaged for a failed rule. (optional)
+
+### IsInList(list, strip = False, error = None)
+Used to determine if the associated field's value exists within the specified list.  
+
+* @list list - List containing values to evaluate.  
+* @error str - Custom error message for a failed rule. (optional)  
+
+### IsType(type, error = None)
+Rule that compares the associated field's value against a specified data type.  
+
+* @type mixed - The type to compare the field value against.  
+* @error str - Custom error message for a failed rule. (optional)  
+
+# Extending
 
 Writing your own rules is quite simple. You just have to make sure your own rules derive from class `validator.core.Rule`. 
 
@@ -107,17 +228,15 @@ Of course, setting `return_collated_results` to `True` in `Validator.run()` will
     >>> print results
     [{'field': 'field_name', 'passed': True, 'value': 'foo'}]
 
-Unit Tests Usage
-================
+# Unit Tests Usage
 
+Tests have been made with the use of Nose (https://github.com/nose-devs/nose). Just navigate to the testing directory of choice run the `nosetests` command to run the entire suite.
 
-Questions
-=========
+# Questions
 
-The best place to ask questions would be in the `Issues` section.
+The best place to ask questions would be in the `Issues` section or on Twitter @wilhelm
 
-Contributions
-=============
+# Contributions
 
 A helping hand is always welcome. The current build includes a fair amount of built-in validation rules, but it could always use a few more. If you find what's available to be a bit lacking, feel free to fork and submit a pull request.
 
@@ -127,7 +246,6 @@ All I ask is the following:
 * Documentation. Document all the things!
 * Tests. Please write functional and unit tests where and when possible.
 
-History
-=======
+# History
 
  * 0.1  Initial release
