@@ -102,6 +102,11 @@ The validator will now check if `field_name` equals `foo`. The result of the val
     >>> print results
     True
     
+Of course, setting `return_collated_results` to `True` in `Validator.run()` will return some more useful information:
+
+    >>> print results
+    [{'field': 'field_name', 'passed': True, 'value': 'foo'}]
+
 Unit Tests Usage
 ================
 
