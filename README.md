@@ -70,10 +70,6 @@ Usage
 Unit Tests Usage
 ================
 
- * copy keys-example.ini to keys.ini
- * edit keys.ini with your test master secret and application secret keys
- * run tests.py
-
 
 Questions
 =========
