@@ -40,18 +40,23 @@ class Field(object):
     value = ''
     """ The value associated with this field. """
 
-    def __init__(self, title, value):
+    stop_on_first_error = True
+    """ Will break out of applying rules when it first encounters an error. """
+
+    def __init__(self, title, value, stop_on_first_error = True):
         """ Constructor that instantiates a class instance and properties.
 
         Keyword arguments:
-        title str -- The title of this field.
-        value str -- The value associated with this field.
+        title str                -- The title of this field.
+        value str                -- The value associated with this field.
+        stop_on_first_error bool -- Will break out of applying rules when it first encounters an error.
         """
 
         super(Field, self).__init__()
         self.rules = []
         self.title = title
         self.value = value
+        self.stop_on_first_error = stop_on_first_error
 
 
     def append(self, rule):
@@ -79,6 +84,8 @@ class Field(object):
         for rule in self.rules:
             if not rule.run(self.value):
                 errors.append(rule.error)
+                if self.stop_on_first_error:
+                    break
         return False if errors else True, errors
 
 
