@@ -3,6 +3,8 @@ About
 
 I wrote this because I could not find a decent validation library for Python. This does precisely what the title suggests; it makes it easier to manage input validation in Python.
 
+There are a handful of other validation libraries out there, but they are all either dated or require you to work your head around some strange syntax. This is the package you want to use when you don't want waste precious time thinking about how the validator should work; it's all in plain English.
+
 Requirements
 ============
 
@@ -22,7 +24,7 @@ Example
 
 The following example shows how you would validate a standard user account with `username`, `email` and `password` fields using some built-in validation rules and their default error messages:
 
-    from validator.core import *
+    from validator.core import Validator, Field
     from validator.rules import *
 
     results = Validator().append([
@@ -66,7 +68,40 @@ Here is the output of `results`:
 Usage
 =========
 
+Supported Rules
+===============
 
+Extending
+=========
+
+Writing your own rules is quite simple. You just have to make sure your own rules derive from class `validator.core.Rule`. 
+
+Here's a simple example:
+
+    from validator.core import Rule
+    
+    class IsFoo(Rule):
+        def run(self, field_value):
+            if field_value is 'foo':
+                return True
+            return False
+
+There you go, it's as easy as that. Now, let's test it out:
+
+    from validator.core import Validator, Field
+    from some.path.in.your.app import IsFoo
+    
+    results = Validator().append([
+        Field('field_name', 'foo').append([
+            IsFoo()
+        ])
+    ]).run()
+
+The validator will now check if `field_name` equals `foo`. The result of the validation is stored in `results`:
+
+    >>> print results
+    True
+    
 Unit Tests Usage
 ================
 
@@ -75,6 +110,17 @@ Questions
 =========
 
 The best place to ask questions would be in the `Issues` section.
+
+Contributions
+=============
+
+A helping hand is always welcome. The current build includes a fair amount of built-in validation rules, but it could always use a few more. If you find what's available to be a bit lacking, feel free to fork and submit a pull request.
+
+All I ask is the following:
+
+* Consistency. Try your best to follow the same coding style in use.
+* Documentation. Document all the things!
+* Tests. Please write functional and unit tests where and when possible.
 
 History
 =======
