@@ -142,7 +142,7 @@ class IsRequired(Rule):
         """
 
         if not field_value:
-            if not error:
+            if not self.error:
                 self.error = 'This field requires a value.'
             return False
         return True
