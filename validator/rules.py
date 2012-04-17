@@ -122,13 +122,30 @@ class IsAlphaNumeric(Regex):
 
 
 
-class IsRequired(Regex):
-    """ Regex convenience derivative class used to determine if given field is empty. """
+class IsRequired(Rule):
+    """ Used to determine if given field is empty. """
 
     def __init__(self, error = None):
-        super(IsRequired, self).__init__(r'^.{1,}$', error)
-        if not error:
-            self.error = 'This field requires a value.'
+        """ Constructor that instantiates a class instance and properties.
+
+        Keyword arguments:
+        error str  -- A user-defined error messaged for a failed rule. (optional)
+        """
+
+        super(IsRequired, self).__init__(error)
+
+    def run(self, field_value):
+        """ Determines if field_value value is empty.
+
+        Keyword arguments:
+        field_value str -- the value of the associated field to compare
+        """
+
+        if not field_value:
+            if not error:
+                self.error = 'This field requires a value.'
+            return False
+        return True
 
 
 
