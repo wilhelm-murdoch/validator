@@ -7,7 +7,7 @@ except ImportError:
 
 setup(
     name = 'Validator',
-    version = '0.0.1',
+    version = '0.0.2',
     description = 'A python module used for setting up validation rules.',
     author = 'Wilhelm Murdoch',
     author_email = 'wilhelm.murdoch@gmail.com',
