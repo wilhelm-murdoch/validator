@@ -15,14 +15,15 @@ class Matches(Rule):
     match = ''
     """ The value to compare against the associated field's value. """
 
-    def __init__(self, match, error = None):
+    def __init__(self, match, error = None, pass_on_blank = False):
         """ Constructor that instantiates a class instance and properties.
 
         Keyword arguments:
-        match str -- The value to compare against the associated field's value.
-        error str -- A user-defined error messaged for a failed rule. (optional)
+        match str          -- The value to compare against the associated field's value.
+        error str          -- A user-defined error messaged for a failed rule. (optional)
+        pass_on_blank bool -- Pass through as success if field value is blank. (optional)
         """
-        super(Matches, self).__init__(error)
+        super(Matches, self).__init__(error, pass_on_blank)
         self.match = match
 
 
@@ -32,6 +33,9 @@ class Matches(Rule):
         Keyword arguments:
         field_value str -- the value of the associated field to compare.
         """
+
+        if not field_value.strip() and self.pass_on_blank:
+            return True
 
         if self.match != field_value:
             if not self.error:
@@ -47,14 +51,15 @@ class Regex(Rule):
     expression = ''
     """ The regular expression to apply. """
 
-    def __init__(self, expression, error = None):
+    def __init__(self, expression, error = None, pass_on_blank = False):
         """ Constructor that instantiates a class instance and properties.
 
         Keyword arguments:
-        expression str -- The regular expression to apply to the given field.
-        error str      -- A user-defined error messaged for a failed rule. (optional)
+        expression str     -- The regular expression to apply to the given field.
+        error str          -- A user-defined error messaged for a failed rule. (optional)
+        pass_on_blank bool -- Pass through as success if field value is blank. (optional)
         """
-        super(Regex, self).__init__(error)
+        super(Regex, self).__init__(error, pass_on_blank)
         self.expression = expression
 
 
@@ -64,6 +69,9 @@ class Regex(Rule):
         Keyword arguments:
         field_value str -- the value of the associated field to compare
         """
+
+        if not field_value.strip() and self.pass_on_blank:
+            return True
 
         if not self.expression:
             raise ValueError, 'This rule requires a regular expression.'
@@ -85,7 +93,7 @@ class IsEmail(Regex):
     """ Regex convenience derivative class used to determine if given field value is a
     valid email address. """
 
-    def __init__(self, error = None):
+    def __init__(self, error = None, pass_on_blank = False):
         super(IsEmail, self).__init__(r'^[a-zA-Z0-9._%-+]+@[a-zA-Z0-9._%-]+.[a-zA-Z]{2,6}$', error)
         if not error:
             self.error = 'This is not a valid email address.'
@@ -95,7 +103,7 @@ class IsEmail(Regex):
 class IsNumeric(Regex):
     """ Regex convenience derivative class used to determine if given field value is numeric-only. """
 
-    def __init__(self, error = None):
+    def __init__(self, error = None, pass_on_blank = False):
         super(IsNumeric, self).__init__(r'^[0-9]+$', error)
         if not error:
             self.error = 'This is not a number.'
@@ -105,7 +113,7 @@ class IsNumeric(Regex):
 class IsAlpha(Regex):
     """ Regex convenience derivative class used to determine if given field value is alpha-only. """
 
-    def __init__(self, error = None):
+    def __init__(self, error = None, pass_on_blank = False):
         super(IsAlpha, self).__init__(r'^[a-zA-Z]+$', error)
         if not error:
             self.error = 'This is not an alpha-only string.'
@@ -115,7 +123,7 @@ class IsAlpha(Regex):
 class IsAlphaNumeric(Regex):
     """ Regex convenience derivative class used to determine if given field value is alpha-numeric. """
 
-    def __init__(self, error = None):
+    def __init__(self, error = None, pass_on_blank = False):
         super(IsAlphaNumeric, self).__init__(r'^[a-zA-Z0-9]+$', error)
         if not error:
             self.error = 'This is not an alpha-numeric string.'
@@ -125,14 +133,15 @@ class IsAlphaNumeric(Regex):
 class IsRequired(Rule):
     """ Used to determine if given field is empty. """
 
-    def __init__(self, error = None):
+    def __init__(self, error = None, pass_on_blank = False):
         """ Constructor that instantiates a class instance and properties.
 
         Keyword arguments:
-        error str  -- A user-defined error messaged for a failed rule. (optional)
+        error str          -- A user-defined error messaged for a failed rule. (optional)
+        pass_on_blank bool -- Pass through as success if field value is blank. (optional)
         """
 
-        super(IsRequired, self).__init__(error)
+        super(IsRequired, self).__init__(error, pass_on_blank)
 
     def run(self, field_value):
         """ Determines if field_value value is empty.
@@ -140,6 +149,9 @@ class IsRequired(Rule):
         Keyword arguments:
         field_value str -- the value of the associated field to compare
         """
+
+        if not field_value.strip() and self.pass_on_blank:
+            return True
 
         if not field_value:
             if not self.error:
@@ -159,16 +171,17 @@ class IsLength(Rule):
     strip = False
     """ Determines whether to strip whitespace from either side of the given field value. """
 
-    def __init__(self, length, strip = False, error = None):
+    def __init__(self, length, strip = False, error = None, pass_on_blank = False):
         """ Constructor that instantiates a class instance and properties.
 
         Keyword arguments:
-        length int -- Absolute maximum character length.
-        strip bool -- Used to strip whitespace from the given field value. (optional)
-        error str  -- A user-defined error messaged for a failed rule. (optional)
+        length int         -- Absolute maximum character length.
+        strip bool         -- Used to strip whitespace from the given field value. (optional)
+        error str          -- A user-defined error messaged for a failed rule. (optional)
+        pass_on_blank bool -- Pass through as success if field value is blank. (optional)
         """
 
-        super(IsLength, self).__init__(error)
+        super(IsLength, self).__init__(error, pass_on_blank)
         self.length = int(length)
         self.strip = bool(strip)
 
@@ -178,6 +191,9 @@ class IsLength(Rule):
         Keyword arguments:
         field_value str -- the value of the associated field to compare
         """
+
+        if not field_value.strip() and self.pass_on_blank:
+            return True
 
         if len((field_value.strip() if self.strip else field_value)) != self.length:
             if not self.error:
@@ -200,17 +216,18 @@ class IsLengthBetween(Rule):
     strip = False
     """ Determines whether to strip whitespace from either side of the given field value. """
 
-    def __init__(self, min, max, strip = False, error = None):
+    def __init__(self, min, max, strip = False, error = None, pass_on_blank = False):
         """ Constructor that instantiates a class instance and properties.
 
         Keyword arguments:
-        min int    -- Absolute minimum character length.
-        max int    -- Absolute maximum character length.
-        strip bool -- Used to strip whitespace from the given field value. (optional)
-        error str  -- A user-defined error messaged for a failed rule. (optional)
+        min int            -- Absolute minimum character length.
+        max int            -- Absolute maximum character length.
+        strip bool         -- Used to strip whitespace from the given field value. (optional)
+        error str          -- A user-defined error messaged for a failed rule. (optional)
+        pass_on_blank bool -- Pass through as success if field value is blank. (optional)
         """
 
-        super(IsLengthBetween, self).__init__(error)
+        super(IsLengthBetween, self).__init__(error, pass_on_blank)
         self.min = int(min)
         self.max = int(max)
         self.strip = bool(strip)
@@ -222,10 +239,15 @@ class IsLengthBetween(Rule):
         field_value str -- the value of the associated field to compare
         """
 
+        if not field_value.strip() and self.pass_on_blank:
+            return True
+
         if self.min <= len((field_value.strip() if self.strip else field_value)) <= self.max:
             return True
+
         if not self.error:
             self.error = "String `%s` length is not within `%d` and `%d`" % (field_value, self.min, self.max)
+
         return False
 
 
@@ -239,16 +261,17 @@ class IsInList(Rule):
     strip = False
     """ Determines whether to strip whitespace from either side of the given field value. """
 
-    def __init__(self, list, strip = False, error = None):
+    def __init__(self, list, strip = False, error = None, pass_on_blank = False):
         """ Constructor that instantiates a class instance and properties.
 
         Keyword arguments:
-        list list  -- List containing values to evaluate.
-        strip bool -- Used to strip whitespace from the given field value. (optional)
-        error str  -- A user-defined error messaged for a failed rule. (optional)
+        list list          -- List containing values to evaluate.
+        strip bool         -- Used to strip whitespace from the given field value. (optional)
+        error str          -- A user-defined error messaged for a failed rule. (optional)
+        pass_on_blank bool -- Pass through as success if field value is blank. (optional)
         """
 
-        super(IsInList, self).__init__(error)
+        super(IsInList, self).__init__(error, pass_on_blank)
         self.list = list
         self.strip = strip
 
@@ -258,6 +281,9 @@ class IsInList(Rule):
         Keyword arguments:
         field_value str -- the value of the associated field to compare
         """
+
+        if not field_value.strip() and self.pass_on_blank:
+            return True
 
         if (field_value.strip() if self.strip else field_value) not in self.list:
             if not self.error:
@@ -273,15 +299,16 @@ class IsType(Rule):
     type = None
     """ The type to compare the field value against. """
 
-    def __init__(self, type, error = None):
+    def __init__(self, type, error = None, pass_on_blank = False):
         """ Constructor that instantiates a class instance and properties.
 
         Keyword arguments:
-        type mixed -- The type to compare the field value against.
-        error str  -- A user-defined error messaged for a failed rule. (optional)
+        type mixed         -- The type to compare the field value against.
+        error str          -- A user-defined error messaged for a failed rule. (optional)
+        pass_on_blank bool -- Pass through as success if field value is blank. (optional)
         """
 
-        super(IsType, self).__init__(error)
+        super(IsType, self).__init__(error, pass_on_blank)
         self.type = type
 
     def run(self, field_value):
@@ -290,6 +317,9 @@ class IsType(Rule):
         Keyword arguments:
         field_value str -- the value of the associated field to compare
         """
+
+        if not field_value.strip() and self.pass_on_blank:
+            return True
 
         if not isinstance(field_value, self.type):
             if not self.error:
