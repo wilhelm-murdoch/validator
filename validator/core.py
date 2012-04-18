@@ -19,7 +19,7 @@ class Rule(object):
 
         Keyword arguments:
         error str          -- A user-defined error messaged for a failed rule. (optional)
-        pass_on_blank bool -- Pass through as success if field value is blank.
+        pass_on_blank bool -- Pass through as success if field value is blank. (optional)
         """
 
         super(Rule, self).__init__()
