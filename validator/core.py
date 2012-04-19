@@ -140,7 +140,7 @@ class Validator(object):
         """ Returns a dictionary/object representing the current form. """
 
         form = {}
-        for field in MerchantValidator.results():
+        for field in self.collated_results:
             form[field['field']] = field['value']
         return form
 
