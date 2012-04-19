@@ -94,7 +94,7 @@ class IsEmail(Regex):
     valid email address. """
 
     def __init__(self, error = None, pass_on_blank = False):
-        super(IsEmail, self).__init__(r'^[a-zA-Z0-9._%-+]+@[a-zA-Z0-9._%-]+.[a-zA-Z]{2,6}$', error)
+        super(IsEmail, self).__init__(r'^[a-zA-Z0-9._%-+]+@[a-zA-Z0-9._%-]+.[a-zA-Z]{2,6}$', error, pass_on_blank)
         if not error:
             self.error = 'This is not a valid email address.'
 
@@ -104,7 +104,7 @@ class IsNumeric(Regex):
     """ Regex convenience derivative class used to determine if given field value is numeric-only. """
 
     def __init__(self, error = None, pass_on_blank = False):
-        super(IsNumeric, self).__init__(r'^[0-9]+$', error)
+        super(IsNumeric, self).__init__(r'^[0-9]*$', error, pass_on_blank)
         if not error:
             self.error = 'This is not a number.'
 
@@ -114,7 +114,7 @@ class IsAlpha(Regex):
     """ Regex convenience derivative class used to determine if given field value is alpha-only. """
 
     def __init__(self, error = None, pass_on_blank = False):
-        super(IsAlpha, self).__init__(r'^[a-zA-Z]+$', error)
+        super(IsAlpha, self).__init__(r'^[a-zA-Z]*$', error, pass_on_blank)
         if not error:
             self.error = 'This is not an alpha-only string.'
 
@@ -124,7 +124,7 @@ class IsAlphaNumeric(Regex):
     """ Regex convenience derivative class used to determine if given field value is alpha-numeric. """
 
     def __init__(self, error = None, pass_on_blank = False):
-        super(IsAlphaNumeric, self).__init__(r'^[a-zA-Z0-9]+$', error)
+        super(IsAlphaNumeric, self).__init__(r'^[a-zA-Z0-9]*$', error, pass_on_blank)
         if not error:
             self.error = 'This is not an alpha-numeric string.'
 
