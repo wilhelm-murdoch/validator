@@ -136,6 +136,15 @@ class Validator(object):
         return self.collated_results
 
 
+    def form(self):
+        """ Returns a dictionary/object representing the current form. """
+
+        form = {}
+        for field in MerchantValidator.results():
+            form[field['field']] = field['value']
+        return form
+
+
     def run(self, return_collated_results = False):
         """ Iterates through all associated Fields and applies all attached Rules. Depending on 'return_collated_results',
         this method will either return True (all rules successful), False (all, or some, rules failed) or a dictionary list
