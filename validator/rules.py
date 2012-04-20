@@ -34,7 +34,7 @@ class Matches(Rule):
         field_value str -- the value of the associated field to compare.
         """
 
-        if not self.pass_on_blank and field_value.strip():
+        if self.pass_on_blank and not field_value.strip():
             return True
 
         if self.match != field_value:
@@ -70,7 +70,7 @@ class Regex(Rule):
         field_value str -- the value of the associated field to compare
         """
 
-        if not self.pass_on_blank and field_value.strip():
+        if self.pass_on_blank and not field_value.strip():
             return True
 
         if not self.expression:
@@ -150,7 +150,7 @@ class IsRequired(Rule):
         field_value str -- the value of the associated field to compare
         """
 
-        if not self.pass_on_blank and field_value.strip():
+        if self.pass_on_blank and not field_value.strip():
             return True
 
         if not field_value:
@@ -192,7 +192,7 @@ class IsLength(Rule):
         field_value str -- the value of the associated field to compare
         """
 
-        if not self.pass_on_blank and field_value.strip():
+        if self.pass_on_blank and not field_value.strip():
             return True
 
         if len((field_value.strip() if self.strip else field_value)) != self.length:
@@ -239,7 +239,7 @@ class IsLengthBetween(Rule):
         field_value str -- the value of the associated field to compare
         """
 
-        if not self.pass_on_blank and field_value.strip():
+        if self.pass_on_blank and not field_value.strip():
             return True
 
         if self.min <= len((field_value.strip() if self.strip else field_value)) <= self.max:
@@ -282,7 +282,7 @@ class IsInList(Rule):
         field_value str -- the value of the associated field to compare
         """
 
-        if not self.pass_on_blank and field_value.strip():
+        if self.pass_on_blank and not field_value.strip():
             return True
 
         if (field_value.strip() if self.strip else field_value) not in self.list:
@@ -318,7 +318,7 @@ class IsType(Rule):
         field_value str -- the value of the associated field to compare
         """
 
-        if not self.pass_on_blank and field_value.strip():
+        if self.pass_on_blank and not field_value.strip():
             return True
 
         if not isinstance(field_value, self.type):
