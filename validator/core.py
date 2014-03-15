@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 """ Validator Core Module
 
@@ -27,10 +27,10 @@ class Rule(object):
         self.pass_on_blank = pass_on_blank
 
 
-    def run(self, *args, **kwargs):
+    def run(self, field_value=None):
         """ Invoked once a defined rule is ready to be validated. """
 
-        raise NotImplementedError, 'This method cannot be accessed directly'
+        raise NotImplementedError('This method cannot be accessed directly')
 
 
 class Field(object):
@@ -74,11 +74,11 @@ class Field(object):
         if isinstance(rule, list):
             for r in rule:
                 if not isinstance(r, Rule):
-                    raise TypeError, 'parameter :rule must be list of class Rule instances'
+                    raise TypeError('parameter :rule must be list of class Rule instances')
                 self.rules.append(r)
             return self
         elif not isinstance(rule, Rule):
-            raise TypeError, 'parameter :rule must be instance of class Rule'
+            raise TypeError('parameter :rule must be instance of class Rule')
         self.rules.append(rule)
         return self
 
@@ -121,11 +121,11 @@ class Validator(object):
         if isinstance(field, list):
             for f in field:
                 if not isinstance(f, Field):
-                    raise TypeError, 'parameter :field must be list of class Field instances'
+                    raise TypeError('parameter :field must be list of class Field instances')
                 self.fields.append(f)
             return self
         if not isinstance(field, Field):
-            raise TypeError, 'parameter :field must be instance of class Field'
+            raise TypeError('parameter :field must be instance of class Field')
         self.fields.append(field)
         return self
 

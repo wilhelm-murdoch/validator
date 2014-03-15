@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 try:
     from setuptools import setup
 except ImportError:
@@ -7,10 +6,10 @@ except ImportError:
 
 setup(
     name = 'Validator',
-    version = '1.0.9',
+    version = '1.0.10',
     description = 'A python module used for setting up validation rules.',
     author = 'Wilhelm Murdoch',
     author_email = 'wilhelm.murdoch@gmail.com',
-    url = 'http://www.thedrunkenepic.com/',
+    url = 'http://devilmayco.de/',
     packages = ['validator']
 )

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 from validator.core import Rule
 import re
@@ -7,7 +7,6 @@ import re
 
 Contains a comprehensive list of built-in validator rules.
 """
-
 class Matches(Rule):
     """ Simple rule used to determine whether one value matches another. Commonly used
     for password confirmation. """
@@ -74,7 +73,7 @@ class Regex(Rule):
             return True
 
         if not self.expression:
-            raise ValueError, 'This rule requires a regular expression.'
+            raise ValueError('This rule requires a regular expression.')
 
         try:
             regex = re.compile(self.expression)
@@ -84,7 +83,7 @@ class Regex(Rule):
                     self.error = "Expression `%s` failed when applied to `%s`" % (self.expression, field_value)
                 return False
         except Exception, e:
-            raise ValueError, "Expression `%s` failed with the following error: %s" % (self.expression, e)
+            raise ValueError("Expression `%s` failed with the following error: %s" % (self.expression, e))
         return True
 
 
@@ -207,33 +206,32 @@ class IsLengthBetween(Rule):
     """ Used to determine whether the given associated field value's character length is
     within the given range. """
 
-    min = 0
+    minimum = 0
     """ Absolute minimum character length. """
 
-    max = 0
+    maximum = 0
     """ Absolute maximum character length. """
 
     strip = False
     """ Determines whether to strip whitespace from either side of the given field value. """
 
-    def __init__(self, min, max, strip = False, error = None, pass_on_blank = False):
+    def __init__(self, minimum, maximum, **kwargs):
         """ Constructor that instantiates a class instance and properties.
 
         Keyword arguments:
-        min int            -- Absolute minimum character length.
+        minimum int        -- Absolute minimum character length.
         max int            -- Absolute maximum character length.
         strip bool         -- Used to strip whitespace from the given field value. (optional)
         error str          -- A user-defined error messaged for a failed rule. (optional)
         pass_on_blank bool -- Pass through as success if field value is blank. (optional)
         """
-
-        super(IsLengthBetween, self).__init__(error, pass_on_blank)
-        self.min = int(min)
-        self.max = int(max)
-        self.strip = bool(strip)
+        super(IsLengthBetween, self).__init__(kwargs.get('error', None), kwargs.get('pass_on_blank', False))
+        self.minimum = int(minimum)
+        self.maximum = int(maximum)
+        self.strip = kwargs.get('strip', False)
 
     def run(self, field_value):
-        """ Determines if field_value character length is between self.min and self.max.
+        """ Determines if field_value character length is between self.minimum and self.maximum.
 
         Keyword arguments:
         field_value str -- the value of the associated field to compare
@@ -242,11 +240,11 @@ class IsLengthBetween(Rule):
         if self.pass_on_blank and not field_value.strip():
             return True
 
-        if self.min <= len((field_value.strip() if self.strip else field_value)) <= self.max:
+        if self.minimum <= len((field_value.strip() if self.strip else field_value)) <= self.maximum:
             return True
 
         if not self.error:
-            self.error = "String `%s` length is not within `%d` and `%d`" % (field_value, self.min, self.max)
+            self.error = "String `%s` length is not within `%d` and `%d`" % (field_value, self.minimum, self.maximum)
 
         return False
 
