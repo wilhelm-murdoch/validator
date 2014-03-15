@@ -294,23 +294,23 @@ class IsInList(Rule):
 class IsType(Rule):
     """ Rule that compares the associated field's value against a specified data type. """
 
-    type = None
+    asserted_type = None
     """ The type to compare the field value against. """
 
-    def __init__(self, type, error = None, pass_on_blank = False):
+    def __init__(self, asserted_type, error = None, pass_on_blank = False):
         """ Constructor that instantiates a class instance and properties.
 
         Keyword arguments:
-        type mixed         -- The type to compare the field value against.
-        error str          -- A user-defined error messaged for a failed rule. (optional)
-        pass_on_blank bool -- Pass through as success if field value is blank. (optional)
+        asserted_type mixed -- The type to compare the field value against.
+        error str           -- A user-defined error messaged for a failed rule. (optional)
+        pass_on_blank bool  -- Pass through as success if field value is blank. (optional)
         """
 
         super(IsType, self).__init__(error, pass_on_blank)
-        self.type = type
+        self.asserted_type = asserted_type
 
     def run(self, field_value):
-        """ Compares field_value against self.type.
+        """ Compares field_value against self.asserted_type.
 
         Keyword arguments:
         field_value str -- the value of the associated field to compare
@@ -319,8 +319,8 @@ class IsType(Rule):
         if self.pass_on_blank and not field_value.strip():
             return True
 
-        if not isinstance(field_value, self.type):
+        if not isinstance(field_value, self.asserted_type):
             if not self.error:
-                self.error = "Type of `%s` is not of type `%s`" % (type(field_value), self.type)
+                self.error = "Type of `%s` is not of type `%s`" % (type(field_value), self.asserted_type)
             return False
         return True

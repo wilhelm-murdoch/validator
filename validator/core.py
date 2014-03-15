@@ -14,7 +14,7 @@ class Rule(object):
     pass_on_blank = False
     """ Pass through as success if field value is blank. Useful if you only want to validate fields with actual values. """
 
-    def __init__(self, error = None, pass_on_blank = False, *args, **kwargs):
+    def __init__(self, error = None, pass_on_blank = False):
         """ Constructor that instantiates a class instance and properties.
 
         Keyword arguments:
@@ -27,7 +27,7 @@ class Rule(object):
         self.pass_on_blank = pass_on_blank
 
 
-    def run(self, field_value=None):
+    def run(self, field_value):
         """ Invoked once a defined rule is ready to be validated. """
 
         raise NotImplementedError('This method cannot be accessed directly')
