@@ -1,3 +1,5 @@
+[![Code Health](https://landscape.io/github/wilhelm-murdoch/Validator/master/landscape.png)](https://landscape.io/github/wilhelm-murdoch/Validator/master)
+
 # About
 
 I wrote this because I could not find a decent validation library for Python. This does precisely what the title suggests; it makes it easier to manage input validation in Python.
