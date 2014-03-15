@@ -1,10 +1,5 @@
 # -*- coding: utf-8 -*-
 
-""" Validator Core Module
-
-Contains all core classes required for the validator to function properly.
-"""
-
 class Rule(object):
     """ Base abstract class representing a "rule". All defined rules must be derived from this class. """
 

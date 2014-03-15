@@ -314,7 +314,7 @@ class IsType(Rule):
         if self.pass_on_blank and not field_value.strip():
             return True
 
-        if not isinstance(field_value, self.asserted_type):
+        if not isinstance(field_value, type(self.asserted_type)):
             if not self.error:
                 self.error = "Type of `%s` is not of type `%s`" % (type(field_value), self.asserted_type)
             return False

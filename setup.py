@@ -1,15 +1,19 @@
 #!/usr/bin/env python
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+# -*- coding: utf-8 -*-
+
+from setuptools import setup, find_packages
+from version import __version__
 
 setup(
-    name = 'Validator',
-    version = '1.0.10',
-    description = 'A python module used for setting up validation rules.',
-    author = 'Wilhelm Murdoch',
-    author_email = 'wilhelm.murdoch@gmail.com',
-    url = 'http://devilmayco.de/',
-    packages = ['validator']
+    name='validator',
+    version=__version__,
+    description='A simple validation module.',
+    author='Wilhelm Murdoch',
+    author_email='wilhelm.murdoch@gmail.com',
+    url='http://www.devilmayco.de/',
+    packages=find_packages(exclude=['tests', 'tests.*']),
+    setup_requires=[
+          'nose==1.3.0'
+        , 'yanc==0.2.3'
+    ]
 )
