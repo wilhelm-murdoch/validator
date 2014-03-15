@@ -1,12 +1,7 @@
 # -*- coding: utf-8 -*-
-
 from validator.core import Rule
 import re
 
-""" Core Rules Module
-
-Contains a comprehensive list of built-in validator rules.
-"""
 class Matches(Rule):
     """ Simple rule used to determine whether one value matches another. Commonly used
     for password confirmation. """
@@ -253,28 +248,28 @@ class IsLengthBetween(Rule):
 class IsInList(Rule):
     """ Used to determine if the associated field's value exists within the specified list. """
 
-    list = list()
+    given_list = list()
     """ A list that contains items that may, or may not, include the given field value. """
 
     strip = False
     """ Determines whether to strip whitespace from either side of the given field value. """
 
-    def __init__(self, list, strip = False, error = None, pass_on_blank = False):
+    def __init__(self, given_list, strip = False, error = None, pass_on_blank = False):
         """ Constructor that instantiates a class instance and properties.
 
         Keyword arguments:
-        list list          -- List containing values to evaluate.
+        given_list list          -- List containing values to evaluate.
         strip bool         -- Used to strip whitespace from the given field value. (optional)
         error str          -- A user-defined error messaged for a failed rule. (optional)
         pass_on_blank bool -- Pass through as success if field value is blank. (optional)
         """
 
         super(IsInList, self).__init__(error, pass_on_blank)
-        self.list = list
+        self.given_list = given_list
         self.strip = strip
 
     def run(self, field_value):
-        """ Checks if field_value is included within self.list.
+        """ Checks if field_value is included within self.given_list.
 
         Keyword arguments:
         field_value str -- the value of the associated field to compare
@@ -283,7 +278,7 @@ class IsInList(Rule):
         if self.pass_on_blank and not field_value.strip():
             return True
 
-        if (field_value.strip() if self.strip else field_value) not in self.list:
+        if (field_value.strip() if self.strip else field_value) not in self.given_list:
             if not self.error:
                 self.error = "Value of `%s` is not within the list" % field_value
             return False
