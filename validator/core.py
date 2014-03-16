@@ -43,7 +43,7 @@ class Field(object):
     stop_on_first_error = True
     """ Will break out of applying rules when it first encounters an error. """
 
-    def __init__(self, title, value, stop_on_first_error = True):
+    def __init__(self, title, value, stop_on_first_error=True):
         """ Constructor that instantiates a class instance and properties.
 
         Keyword arguments:
