@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import field
 
 class Validator(object):
     """ Responsible for applying rules against the specified fields. """
@@ -17,22 +18,22 @@ class Validator(object):
         self.collated_results = []
 
 
-    def append(self, field):
+    def append(self, _field):
         """ Attaches an instance of class Field to the current instance of this Validator
 
         Keyword arguments:
         field object -- Instance of class Field to apply to this Validator.
         """
 
-        if isinstance(field, list):
-            for f in field:
-                if not isinstance(f, Field):
+        if isinstance(_field, list):
+            for f in _field:
+                if not isinstance(f, field.Field):
                     raise TypeError('parameter :field must be list of class Field instances')
                 self.fields.append(f)
             return self
-        if not isinstance(field, Field):
+        if not isinstance(_field, Field):
             raise TypeError('parameter :field must be instance of class Field')
-        self.fields.append(field)
+        self.fields.append(_field)
         return self
 
 

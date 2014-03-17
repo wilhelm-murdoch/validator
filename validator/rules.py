@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from validator.core import Rule
+import rule
 import re
 
-class Matches(Rule):
+class Matches(rule.Rule):
     """ Simple rule used to determine whether one value matches another. Commonly used
     for password confirmation. """
 
@@ -38,8 +38,7 @@ class Matches(Rule):
         return True
 
 
-
-class Regex(Rule):
+class Regex(rule.Rule):
     """ Applies a regular expression to a given field value. """
 
     expression = ''
@@ -82,7 +81,6 @@ class Regex(Rule):
         return True
 
 
-
 class IsEmail(Regex):
     """ Regex convenience derivative class used to determine if given field value is a
     valid email address. """
@@ -91,7 +89,6 @@ class IsEmail(Regex):
         super(IsEmail, self).__init__(r'^[a-zA-Z0-9._%-+]+@[a-zA-Z0-9._%-]+.[a-zA-Z]{2,6}$', error, pass_on_blank)
         if not error:
             self.error = 'This is not a valid email address.'
-
 
 
 class IsNumeric(Regex):
@@ -103,7 +100,6 @@ class IsNumeric(Regex):
             self.error = 'This is not a number.'
 
 
-
 class IsAlpha(Regex):
     """ Regex convenience derivative class used to determine if given field value is alpha-only. """
 
@@ -111,7 +107,6 @@ class IsAlpha(Regex):
         super(IsAlpha, self).__init__(r'^[a-zA-Z]*$', error, pass_on_blank)
         if not error:
             self.error = 'This is not an alpha-only string.'
-
 
 
 class IsAlphaNumeric(Regex):
@@ -123,8 +118,7 @@ class IsAlphaNumeric(Regex):
             self.error = 'This is not an alpha-numeric string.'
 
 
-
-class IsRequired(Rule):
+class IsRequired(rule.Rule):
     """ Used to determine if given field is empty. """
 
     def __init__(self, error = None, pass_on_blank = False):
@@ -154,8 +148,7 @@ class IsRequired(Rule):
         return True
 
 
-
-class IsLength(Rule):
+class IsLength(rule.Rule):
     """ Used to determine whether the given associated field value's character length equals
     the given maximum amount. """
 
@@ -196,8 +189,7 @@ class IsLength(Rule):
         return True
 
 
-
-class IsLengthBetween(Rule):
+class IsLengthBetween(rule.Rule):
     """ Used to determine whether the given associated field value's character length is
     within the given range. """
 
@@ -244,8 +236,7 @@ class IsLengthBetween(Rule):
         return False
 
 
-
-class IsInList(Rule):
+class IsInList(rule.Rule):
     """ Used to determine if the associated field's value exists within the specified list. """
 
     given_list = list()
@@ -285,8 +276,7 @@ class IsInList(Rule):
         return True
 
 
-
-class IsType(Rule):
+class IsType(rule.Rule):
     """ Rule that compares the associated field's value against a specified data type. """
 
     asserted_type = None

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from validator import core, rules
+from validator import field, rules
 import unittest
 
 class FieldTest(unittest.TestCase):
@@ -9,7 +9,7 @@ class FieldTest(unittest.TestCase):
         mn = 3
         mx = 10
 
-        r = core.Field(f, v).append(rules.IsLengthBetween(mn, mx)).run()
+        r = field.Field(f, v).append(rules.IsLengthBetween(mn, mx)).run()
 
         self.assertTrue(r[0])
         self.assertEquals(r[1], [])
@@ -21,7 +21,7 @@ class FieldTest(unittest.TestCase):
         mn = 3
         mx = 4
 
-        r = core.Field(f, v).append(rules.IsLengthBetween(mn, mx)).run()
+        r = field.Field(f, v).append(rules.IsLengthBetween(mn, mx)).run()
 
         self.assertFalse(r[0])
         self.assertEquals(len(r[1]), 1)
@@ -34,7 +34,7 @@ class FieldTest(unittest.TestCase):
         mn = 3
         mx = 10
 
-        r = core.Field(f, v).append([
+        r = field.Field(f, v).append([
               rules.IsRequired()
             , rules.IsAlphaNumeric()
             , rules.IsLengthBetween(mn, mx)
@@ -50,7 +50,7 @@ class FieldTest(unittest.TestCase):
         mn = 3
         mx = 4
 
-        r = core.Field(f, v).append([
+        r = field.Field(f, v).append([
               rules.IsRequired()
             , rules.IsNumeric()
             , rules.IsLengthBetween(mn, mx)
@@ -67,7 +67,7 @@ class FieldTest(unittest.TestCase):
         mn = 3
         mx = 4
 
-        r = core.Field(f, v, False).append([
+        r = field.Field(f, v, False).append([
               rules.IsRequired()
             , rules.IsNumeric()
             , rules.IsLengthBetween(mn, mx)

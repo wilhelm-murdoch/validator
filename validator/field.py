@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import rule
 
 class Field(object):
     """ Class representing a "field". """
@@ -31,22 +32,22 @@ class Field(object):
         self.stop_on_first_error = stop_on_first_error
 
 
-    def append(self, rule):
+    def append(self, _rule):
         """ Attaches an instance of class Rule to the current instance of this Field
 
         Keyword arguments:
         rule object -- Instance of class Rule to apply to this field.
         """
 
-        if isinstance(rule, list):
-            for r in rule:
-                if not isinstance(r, Rule):
+        if isinstance(_rule, list):
+            for r in _rule:
+                if not isinstance(r, rule.Rule):
                     raise TypeError('parameter :rule must be list of class Rule instances')
                 self.rules.append(r)
             return self
-        elif not isinstance(rule, Rule):
+        elif not isinstance(_rule, rule.Rule):
             raise TypeError('parameter :rule must be instance of class Rule')
-        self.rules.append(rule)
+        self.rules.append(_rule)
         return self
 
 
