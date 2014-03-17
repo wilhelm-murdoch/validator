@@ -1,13 +1,13 @@
 [![Build Status](https://drone.io/github.com/wilhelm-murdoch/Validator/status.png)](https://drone.io/github.com/wilhelm-murdoch/Validator/latest) [![Code Health](https://landscape.io/github/wilhelm-murdoch/Validator/master/landscape.png)](https://landscape.io/github/wilhelm-murdoch/Validator/master)
 
-## Validator
-
+### Validator
+===
 
 I wrote this because I could not find a validation for Python that didn't require some crazy dependencies, or wasn't plain simple to work with. This does precisely what the title suggests; it makes it easier to manage input validation in Python.
 
 There are a handful of other validation libraries out there, but they are all either dated or require you to work your head around some strange syntax. This is the package you want to use when you don't want waste precious time thinking about how the validator should work; it's all in plain English.
 
-Say you want to validate an online form. A form is just a `collection` of `fields`. These `fields` must follow certain `rules`. This is the naming convention used throughout the library. It makes no assumptions as to how you plan on applying validation rules.
+Say you want to validator an online form. A form is just a `collection` of `fields`. These `fields` must follow certain `rules`. This is the naming convention used throughout the library.
 
 ## Installation
 
@@ -121,6 +121,40 @@ If any fields don't pass validation, the results will provide a list of relevent
             'Some other error'
         ]
         'value': 'bar'
+    }
+    ...
+]
+```
+
+You can also specify a custom error message for your validation rule. For instance:
+
+```python
+from validator import collection, field, rules
+
+form = collection.Collection().append([
+    field.Field('username', 'wilhelm').append([
+          rules.IsRequired(error='heh.')
+        , rules.IsAlphaNumeric(error='lolwut?')
+        , rules.IsLengthBetween(3, 10, error='It is either too long or too short, man.')
+    ]),
+])
+```
+
+If this form generated errors, you'd get the following output:
+
+```python
+>>> print form.results()
+[
+    ...
+    {
+        'field': 'username',
+        'passed': False,
+        'errors': [
+            'heh.',
+            'lolwut?',
+            'It is either too long or too short, man.'
+        ]
+        'value': 'wilhelm'
     }
     ...
 ]
