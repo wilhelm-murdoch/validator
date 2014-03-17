@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from validator import validator, field, rules
+from validator import collection, field, rules
 import unittest
 
-class ValidatorTest(unittest.TestCase):
+class CollectionTest(unittest.TestCase):
     def setUp(self):
-        self.v = validator.Validator().append([
+        self.c = collection.Collection().append([
             field.Field('username', 'wilhelm').append([
                   rules.IsRequired()
                 , rules.IsAlphaNumeric()
@@ -24,7 +24,7 @@ class ValidatorTest(unittest.TestCase):
         ])
 
     def test_form(self):
-        f = self.v.form()
+        f = self.c.form()
         
         self.assertEquals(f['username'], 'wilhelm')
         self.assertEquals(f['email'], 'wilhelm@gmail.com')
@@ -32,10 +32,10 @@ class ValidatorTest(unittest.TestCase):
         self.assertEquals(f['password-confirm'], 'root')
 
     def test_validator_pass(self):
-        self.assertTrue(self.v.run())
+        self.assertTrue(self.c.run())
 
     def test_validator_pass_collated_results(self):
-        r = self.v.run(True)
+        r = self.c.run(True)
 
         self.assertTrue(type(r), dict)
         self.assertEquals(len(r), 4)
@@ -45,26 +45,26 @@ class ValidatorTest(unittest.TestCase):
             self.assertIsNone(f['errors'])
 
     def test_validator_fail(self):
-        self.v.append(
+        self.c.append(
             field.Field('foo', 'bar').append([
                   rules.IsLengthBetween(1, 1)
                 , rules.IsEmail()
             ])
         )
 
-        r = self.v.run()
+        r = self.c.run()
 
         self.assertFalse(r)
 
     def test_validator_fail_collated_results(self):
-        self.v.append(
+        self.c.append(
             field.Field('foo', 'bar').append([
                   rules.IsLengthBetween(1, 1)
                 , rules.IsEmail()
             ])
         )
 
-        r = self.v.run(True)
+        r = self.c.run(True)
 
         self.assertTrue(type(r), dict)
         self.assertEquals(len(r), 5)

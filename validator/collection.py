@@ -1,30 +1,19 @@
 # -*- coding: utf-8 -*-
 import field
 
-class Validator(object):
-    """ Responsible for applying rules against the specified fields. """
-
-    fields = []
-    """ List containing instances of class Field associated with this validator. """
-
-    collated_results = []
-    """ List containing validation results of each field and associated rule. """
-
+class Collection(object):
+    """ Contains a list of fields and applies assocated rules against them. """
     def __init__(self):
         """ Constructor that instantiates a class instance and properties. """
-
-        super(Validator, self).__init__()
         self.fields = []
         self.collated_results = []
 
-
     def append(self, _field):
-        """ Attaches an instance of class Field to the current instance of this Validator
+        """ Attaches an instance of class Field to the current instance of this collection
 
         Keyword arguments:
-        field object -- Instance of class Field to apply to this Validator.
+        field object -- Instance of class Field to apply to this collection.
         """
-
         if isinstance(_field, list):
             for f in _field:
                 if not isinstance(f, field.Field):
@@ -36,12 +25,9 @@ class Validator(object):
         self.fields.append(_field)
         return self
 
-
     def results(self):
-        """ Returns the collated results for the current Validator instance. """
-
+        """ Returns the collated results for the current collection instance. """
         return self.collated_results
-
 
     def form(self):
         """ Returns a dictionary/object representing the current form. """
@@ -49,7 +35,6 @@ class Validator(object):
             field.title:field.value
             for field in self.fields
         }
-
 
     def run(self, return_collated_results = False):
         """ Iterates through all associated Fields and applies all attached Rules. Depending on 'return_collated_results',
@@ -59,7 +44,6 @@ class Validator(object):
         Keyword arguments:
         return_collated_results bool -- Returns dictionary list of Field Rule collated results instead of True or False.
         """
-
         passed = True
         for field in self.fields:
             result, errors = field.run()

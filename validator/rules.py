@@ -5,10 +5,6 @@ import re
 class Matches(rule.Rule):
     """ Simple rule used to determine whether one value matches another. Commonly used
     for password confirmation. """
-
-    match = ''
-    """ The value to compare against the associated field's value. """
-
     def __init__(self, match, error = None, pass_on_blank = False):
         """ Constructor that instantiates a class instance and properties.
 
@@ -20,14 +16,12 @@ class Matches(rule.Rule):
         super(Matches, self).__init__(error, pass_on_blank)
         self.match = match
 
-
     def run(self, field_value):
         """ Invoked once a defined rule is ready to be validated.
 
         Keyword arguments:
         field_value str -- the value of the associated field to compare.
         """
-
         if self.pass_on_blank and not field_value.strip():
             return True
 
@@ -40,10 +34,6 @@ class Matches(rule.Rule):
 
 class Regex(rule.Rule):
     """ Applies a regular expression to a given field value. """
-
-    expression = ''
-    """ The regular expression to apply. """
-
     def __init__(self, expression, error = None, pass_on_blank = False):
         """ Constructor that instantiates a class instance and properties.
 
@@ -55,14 +45,12 @@ class Regex(rule.Rule):
         super(Regex, self).__init__(error, pass_on_blank)
         self.expression = expression
 
-
     def run(self, field_value):
         """ Invoked once a defined rule is ready to be validated.
 
         Keyword arguments:
         field_value str -- the value of the associated field to compare
         """
-
         if self.pass_on_blank and not field_value.strip():
             return True
 
@@ -84,7 +72,6 @@ class Regex(rule.Rule):
 class IsEmail(Regex):
     """ Regex convenience derivative class used to determine if given field value is a
     valid email address. """
-
     def __init__(self, error = None, pass_on_blank = False):
         super(IsEmail, self).__init__(r'^[a-zA-Z0-9._%-+]+@[a-zA-Z0-9._%-]+.[a-zA-Z]{2,6}$', error, pass_on_blank)
         if not error:
@@ -93,7 +80,6 @@ class IsEmail(Regex):
 
 class IsNumeric(Regex):
     """ Regex convenience derivative class used to determine if given field value is numeric-only. """
-
     def __init__(self, error = None, pass_on_blank = False):
         super(IsNumeric, self).__init__(r'^[0-9]*$', error, pass_on_blank)
         if not error:
@@ -102,7 +88,6 @@ class IsNumeric(Regex):
 
 class IsAlpha(Regex):
     """ Regex convenience derivative class used to determine if given field value is alpha-only. """
-
     def __init__(self, error = None, pass_on_blank = False):
         super(IsAlpha, self).__init__(r'^[a-zA-Z]*$', error, pass_on_blank)
         if not error:
@@ -111,7 +96,6 @@ class IsAlpha(Regex):
 
 class IsAlphaNumeric(Regex):
     """ Regex convenience derivative class used to determine if given field value is alpha-numeric. """
-
     def __init__(self, error = None, pass_on_blank = False):
         super(IsAlphaNumeric, self).__init__(r'^[a-zA-Z0-9]*$', error, pass_on_blank)
         if not error:
@@ -120,7 +104,6 @@ class IsAlphaNumeric(Regex):
 
 class IsRequired(rule.Rule):
     """ Used to determine if given field is empty. """
-
     def __init__(self, error = None, pass_on_blank = False):
         """ Constructor that instantiates a class instance and properties.
 
@@ -128,7 +111,6 @@ class IsRequired(rule.Rule):
         error str          -- A user-defined error messaged for a failed rule. (optional)
         pass_on_blank bool -- Pass through as success if field value is blank. (optional)
         """
-
         super(IsRequired, self).__init__(error, pass_on_blank)
 
     def run(self, field_value):
@@ -137,7 +119,6 @@ class IsRequired(rule.Rule):
         Keyword arguments:
         field_value str -- the value of the associated field to compare
         """
-
         if self.pass_on_blank and not field_value.strip():
             return True
 
@@ -151,13 +132,6 @@ class IsRequired(rule.Rule):
 class IsLength(rule.Rule):
     """ Used to determine whether the given associated field value's character length equals
     the given maximum amount. """
-
-    length = None
-    """ Absolute maximum character length. """
-
-    strip = False
-    """ Determines whether to strip whitespace from either side of the given field value. """
-
     def __init__(self, length, strip = False, error = None, pass_on_blank = False):
         """ Constructor that instantiates a class instance and properties.
 
@@ -167,7 +141,6 @@ class IsLength(rule.Rule):
         error str          -- A user-defined error messaged for a failed rule. (optional)
         pass_on_blank bool -- Pass through as success if field value is blank. (optional)
         """
-
         super(IsLength, self).__init__(error, pass_on_blank)
         self.length = int(length)
         self.strip = bool(strip)
@@ -178,7 +151,6 @@ class IsLength(rule.Rule):
         Keyword arguments:
         field_value str -- the value of the associated field to compare
         """
-
         if self.pass_on_blank and not field_value.strip():
             return True
 
@@ -192,16 +164,6 @@ class IsLength(rule.Rule):
 class IsLengthBetween(rule.Rule):
     """ Used to determine whether the given associated field value's character length is
     within the given range. """
-
-    minimum = 0
-    """ Absolute minimum character length. """
-
-    maximum = 0
-    """ Absolute maximum character length. """
-
-    strip = False
-    """ Determines whether to strip whitespace from either side of the given field value. """
-
     def __init__(self, minimum, maximum, **kwargs):
         """ Constructor that instantiates a class instance and properties.
 
@@ -223,7 +185,6 @@ class IsLengthBetween(rule.Rule):
         Keyword arguments:
         field_value str -- the value of the associated field to compare
         """
-
         if self.pass_on_blank and not field_value.strip():
             return True
 
@@ -238,13 +199,6 @@ class IsLengthBetween(rule.Rule):
 
 class IsInList(rule.Rule):
     """ Used to determine if the associated field's value exists within the specified list. """
-
-    given_list = list()
-    """ A list that contains items that may, or may not, include the given field value. """
-
-    strip = False
-    """ Determines whether to strip whitespace from either side of the given field value. """
-
     def __init__(self, given_list, strip = False, error = None, pass_on_blank = False):
         """ Constructor that instantiates a class instance and properties.
 
@@ -254,7 +208,6 @@ class IsInList(rule.Rule):
         error str          -- A user-defined error messaged for a failed rule. (optional)
         pass_on_blank bool -- Pass through as success if field value is blank. (optional)
         """
-
         super(IsInList, self).__init__(error, pass_on_blank)
         self.given_list = given_list
         self.strip = strip
@@ -265,7 +218,6 @@ class IsInList(rule.Rule):
         Keyword arguments:
         field_value str -- the value of the associated field to compare
         """
-
         if self.pass_on_blank and not field_value.strip():
             return True
 
@@ -278,10 +230,6 @@ class IsInList(rule.Rule):
 
 class IsType(rule.Rule):
     """ Rule that compares the associated field's value against a specified data type. """
-
-    asserted_type = None
-    """ The type to compare the field value against. """
-
     def __init__(self, asserted_type, error = None, pass_on_blank = False):
         """ Constructor that instantiates a class instance and properties.
 
@@ -290,7 +238,6 @@ class IsType(rule.Rule):
         error str           -- A user-defined error messaged for a failed rule. (optional)
         pass_on_blank bool  -- Pass through as success if field value is blank. (optional)
         """
-
         super(IsType, self).__init__(error, pass_on_blank)
         self.asserted_type = asserted_type
 
@@ -300,7 +247,6 @@ class IsType(rule.Rule):
         Keyword arguments:
         field_value str -- the value of the associated field to compare
         """
-
         if self.pass_on_blank and not field_value.strip():
             return True
 
