@@ -31,7 +31,7 @@ class Validator(object):
                     raise TypeError('parameter :field must be list of class Field instances')
                 self.fields.append(f)
             return self
-        if not isinstance(_field, Field):
+        if not isinstance(_field, field.Field):
             raise TypeError('parameter :field must be instance of class Field')
         self.fields.append(_field)
         return self
@@ -45,11 +45,10 @@ class Validator(object):
 
     def form(self):
         """ Returns a dictionary/object representing the current form. """
-
-        form = {}
-        for field in self.collated_results:
-            form[field['field']] = field['value']
-        return form
+        return {
+            field.title:field.value
+            for field in self.fields
+        }
 
 
     def run(self, return_collated_results = False):
@@ -68,7 +67,8 @@ class Validator(object):
             results = {
                 'field': field.title,
                 'value': field.value,
-                'passed': result
+                'passed': result,
+                'errors': None
             }
 
             if errors:
