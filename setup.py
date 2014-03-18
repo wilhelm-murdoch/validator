@@ -11,7 +11,7 @@ __version__ = '.'.join([str(__major__), str(__minor__), str(__patch__)])
 setup(
     name='validator',
     version=__version__,
-    description='A simple validation module.',
+    description='A plain-as-vanilla validating package written for Python.',
     author='Wilhelm Murdoch',
     author_email='wilhelm.murdoch@gmail.com',
     url='http://www.devilmayco.de/',
