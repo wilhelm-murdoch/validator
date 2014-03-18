@@ -30,15 +30,15 @@ Alternatively, you can use the following make targets for local development:
 
 If you have pip installed, you should be able to run the following command:
 
+    $: pip install validator
+    
+Or,
+
     $: pip install git+ssh://git@github.com/wilhelm-murdoch/validator.git
 
 Or, you can add the following line to your `requirements.txt` file:
 
     -e git+git://github.com/wilhelm-murdoch/validator.git#egg=validator
-
-This package will eventually be submitted to PyPy, so, hopefully, you should be able to do this:
-
-    $: pip install validator
 
 ## Examples
 
