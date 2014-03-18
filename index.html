@@ -1,0 +1,290 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Validator by wilhelm-murdoch</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Validator</h1>
+        <p>A plain-as-vanilla validating package written for Python.</p>
+
+        <p class="view"><a href="https://github.com/wilhelm-murdoch/validator">View the Project on GitHub <small>wilhelm-murdoch/validator</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/wilhelm-murdoch/validator/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/wilhelm-murdoch/validator/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/wilhelm-murdoch/validator">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p><a href="https://drone.io/github.com/wilhelm-murdoch/Validator/latest"><img src="https://drone.io/github.com/wilhelm-murdoch/Validator/status.png" alt="Build Status"></a> <a href="https://landscape.io/github/wilhelm-murdoch/Validator/master"><img src="https://landscape.io/github/wilhelm-murdoch/Validator/master/landscape.png" alt="Code Health"></a></p>
+
+<h3>
+<a name="validator" class="anchor" href="#validator"><span class="octicon octicon-link"></span></a>Validator</h3>
+
+<h1></h1>
+
+<p>I wrote this because I could not find a validation for Python that didn't require some crazy dependencies, or wasn't plain simple to work with. This does precisely what the title suggests; it makes it easier to manage input validation in Python.</p>
+
+<p>There are a handful of other validation libraries out there, but they are all either dated or require you to work your head around some strange syntax. This is the package you want to use when you don't want waste precious time thinking about how the validator should work; it's all in plain English.</p>
+
+<p>Say you want to validator an online form. A form is just a <code>collection</code> of <code>fields</code>. These <code>fields</code> must follow certain <code>rules</code>. This is the naming convention used throughout the library.</p>
+
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<h3>
+<a name="from-source" class="anchor" href="#from-source"><span class="octicon octicon-link"></span></a>From Source</h3>
+
+<p>If you plan on forking and doing some local development, follow these steps.</p>
+
+<pre><code>$: git clone git@github.com:wilhelm-murdoch/validator.git
+$: cd validator
+$: python setup.py install
+</code></pre>
+
+<p>Alternatively, you can use the following make targets for local development:</p>
+
+<ol>
+<li>
+<code>make install</code> installs validator locally in development mode.</li>
+<li>
+<code>make uninstall</code> removes validator locally</li>
+<li>
+<code>make test</code> runs the unit test suite</li>
+<li>
+<code>make clean</code> removes any garbage files that usage and installation generates</li>
+</ol><h3>
+<a name="using-pip" class="anchor" href="#using-pip"><span class="octicon octicon-link"></span></a>Using Pip</h3>
+
+<p>If you have pip installed, you should be able to run the following command:</p>
+
+<pre><code>$: pip install validator
+</code></pre>
+
+<p>Or,</p>
+
+<pre><code>$: pip install git+ssh://git@github.com/wilhelm-murdoch/validator.git
+</code></pre>
+
+<p>Or, you can add the following line to your <code>requirements.txt</code> file:</p>
+
+<pre><code>-e git+git://github.com/wilhelm-murdoch/validator.git#egg=validator
+</code></pre>
+
+<h2>
+<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h2>
+
+<p>The following example shows how you would validate a standard user account with <code>username</code>, <code>email</code> and <code>password</code> fields using some built-in validation rules and their default error messages:</p>
+
+<div class="highlight highlight-python"><pre><span class="kn">from</span> <span class="nn">validator</span> <span class="kn">import</span> <span class="n">collection</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">rules</span>
+
+<span class="n">form</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">Collection</span><span class="p">()</span><span class="o">.</span><span class="n">append</span><span class="p">([</span>
+    <span class="n">field</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s">'username'</span><span class="p">,</span> <span class="s">'wilhelm'</span><span class="p">)</span><span class="o">.</span><span class="n">append</span><span class="p">([</span>
+          <span class="n">rules</span><span class="o">.</span><span class="n">IsRequired</span><span class="p">()</span>
+        <span class="p">,</span> <span class="n">rules</span><span class="o">.</span><span class="n">IsAlphaNumeric</span><span class="p">()</span>
+        <span class="p">,</span> <span class="n">rules</span><span class="o">.</span><span class="n">IsLengthBetween</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="p">]),</span>
+    <span class="n">field</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s">'email'</span><span class="p">,</span> <span class="s">'wilhelm@gmail.com'</span><span class="p">)</span><span class="o">.</span><span class="n">append</span><span class="p">([</span>
+          <span class="n">rules</span><span class="o">.</span><span class="n">IsRequired</span><span class="p">()</span>
+        <span class="p">,</span> <span class="n">rules</span><span class="o">.</span><span class="n">IsEmail</span><span class="p">()</span>
+    <span class="p">]),</span>
+    <span class="n">field</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s">'password'</span><span class="p">,</span> <span class="s">'root'</span><span class="p">)</span><span class="o">.</span><span class="n">append</span><span class="p">([</span>
+          <span class="n">rules</span><span class="o">.</span><span class="n">IsRequired</span><span class="p">()</span>
+        <span class="p">,</span> <span class="n">rules</span><span class="o">.</span><span class="n">IsLengthBetween</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="p">]),</span>
+    <span class="n">field</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s">'password-confirm'</span><span class="p">,</span> <span class="s">'root'</span><span class="p">)</span><span class="o">.</span><span class="n">append</span><span class="p">([</span>
+        <span class="n">rules</span><span class="o">.</span><span class="n">Matches</span><span class="p">(</span><span class="s">'root'</span><span class="p">)</span>
+    <span class="p">])</span>
+<span class="p">])</span>
+</pre></div>
+
+<p>Now, to run the validator, just do:</p>
+
+<div class="highlight highlight-python"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">form</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="bp">True</span>
+</pre></div>
+
+<p>By default, method <code>collection.run</code> will return a boolean value representing the result of the validation. If you want more detailed information, you have a few options.</p>
+
+<p>Once you've run the validation process. You can do the following:</p>
+
+<div class="highlight highlight-python"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">form</span><span class="o">.</span><span class="n">results</span><span class="p">()</span>
+<span class="p">[{</span>
+    <span class="s">'field'</span><span class="p">:</span> <span class="s">'username'</span><span class="p">,</span>
+    <span class="s">'passed'</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="s">'value'</span><span class="p">:</span> <span class="s">'wilhelm'</span><span class="p">,</span>
+    <span class="s">'errors'</span><span class="p">:</span> <span class="bp">None</span>
+<span class="p">},</span> <span class="p">{</span>
+    <span class="s">'field'</span><span class="p">:</span> <span class="s">'email'</span><span class="p">,</span>
+    <span class="s">'passed'</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="s">'value'</span><span class="p">:</span> <span class="s">'wilhelm.murdoch@gmail.com'</span><span class="p">,</span>
+    <span class="s">'errors'</span><span class="p">:</span> <span class="bp">None</span>
+<span class="p">},</span> <span class="p">{</span>
+    <span class="s">'field'</span><span class="p">:</span> <span class="s">'password'</span><span class="p">,</span>
+    <span class="s">'passed'</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="s">'value'</span><span class="p">:</span> <span class="s">'root'</span><span class="p">,</span>
+    <span class="s">'errors'</span><span class="p">:</span> <span class="bp">None</span>
+<span class="p">},</span> <span class="p">{</span>
+    <span class="s">'field'</span><span class="p">:</span> <span class="s">'password-confirm'</span><span class="p">,</span>
+    <span class="s">'passed'</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="s">'value'</span><span class="p">:</span> <span class="s">'root'</span><span class="p">,</span>
+    <span class="s">'errors'</span><span class="p">:</span> <span class="bp">None</span>
+<span class="p">}]</span>
+</pre></div>
+
+<p>Or, you can just do:</p>
+
+<div class="highlight highlight-python"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">form</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="o">...</span> <span class="n">same</span> <span class="n">output</span> <span class="k">as</span> <span class="n">above</span> <span class="o">...</span>
+</pre></div>
+
+<p>If any fields don't pass validation, the results will provide a list of relevent errors associated with the field in question. For example:</p>
+
+<div class="highlight highlight-python"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">form</span><span class="o">.</span><span class="n">results</span><span class="p">()</span>
+<span class="p">[</span>
+    <span class="o">...</span>
+    <span class="p">{</span>
+        <span class="s">'field'</span><span class="p">:</span> <span class="s">'email'</span><span class="p">,</span>
+        <span class="s">'passed'</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">'errors'</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s">'Length is too short'</span><span class="p">,</span>
+            <span class="s">'Is not a valid email address'</span><span class="p">,</span>
+            <span class="s">'Some other error'</span>
+        <span class="p">]</span>
+        <span class="s">'value'</span><span class="p">:</span> <span class="s">'bar'</span>
+    <span class="p">}</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+
+<p>You can also specify a custom error message for your validation rule. For instance:</p>
+
+<div class="highlight highlight-python"><pre><span class="kn">from</span> <span class="nn">validator</span> <span class="kn">import</span> <span class="n">collection</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">rules</span>
+
+<span class="n">form</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">Collection</span><span class="p">()</span><span class="o">.</span><span class="n">append</span><span class="p">([</span>
+    <span class="n">field</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s">'username'</span><span class="p">,</span> <span class="s">'wilhelm'</span><span class="p">)</span><span class="o">.</span><span class="n">append</span><span class="p">([</span>
+          <span class="n">rules</span><span class="o">.</span><span class="n">IsRequired</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="s">'heh.'</span><span class="p">)</span>
+        <span class="p">,</span> <span class="n">rules</span><span class="o">.</span><span class="n">IsAlphaNumeric</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="s">'lolwut?'</span><span class="p">)</span>
+        <span class="p">,</span> <span class="n">rules</span><span class="o">.</span><span class="n">IsLengthBetween</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="s">'It is either too long or too short, man.'</span><span class="p">)</span>
+    <span class="p">]),</span>
+<span class="p">])</span>
+</pre></div>
+
+<p>If this form generated errors, you'd get the following output:</p>
+
+<div class="highlight highlight-python"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">form</span><span class="o">.</span><span class="n">results</span><span class="p">()</span>
+<span class="p">[</span>
+    <span class="o">...</span>
+    <span class="p">{</span>
+        <span class="s">'field'</span><span class="p">:</span> <span class="s">'username'</span><span class="p">,</span>
+        <span class="s">'passed'</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">'errors'</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s">'heh.'</span><span class="p">,</span>
+            <span class="s">'lolwut?'</span><span class="p">,</span>
+            <span class="s">'It is either too long or too short, man.'</span>
+        <span class="p">]</span>
+        <span class="s">'value'</span><span class="p">:</span> <span class="s">'wilhelm'</span>
+    <span class="p">}</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+
+<p>If you want to return a JSON representation of your form, you can do the following:</p>
+
+<div class="highlight highlight-python"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">form</span><span class="o">.</span><span class="n">form</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="s">'username'</span><span class="p">:</span> <span class="s">'wilhelm'</span><span class="p">,</span>
+    <span class="s">'password'</span><span class="p">:</span> <span class="s">'root'</span><span class="p">,</span>
+    <span class="s">'password-confirm'</span><span class="p">:</span> <span class="s">'root'</span><span class="p">,</span>
+    <span class="s">'email'</span><span class="p">:</span> <span class="s">'wilhelm@gmail.com'</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>
+<a name="extending" class="anchor" href="#extending"><span class="octicon octicon-link"></span></a>Extending</h2>
+
+<p>Writing your own rules is quite simple. You just have to make sure your own rules derive from class <code>validator.rule.Rule</code>. </p>
+
+<p>Here's a simple example:</p>
+
+<div class="highlight highlight-python"><pre><span class="kn">from</span> <span class="nn">validator</span> <span class="kn">import</span> <span class="n">rule</span>
+
+<span class="k">class</span> <span class="nc">IsFoo</span><span class="p">(</span><span class="n">rule</span><span class="o">.</span><span class="n">Rule</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">field_value</span> <span class="ow">is</span> <span class="s">'foo'</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">return</span> <span class="bp">False</span>
+</pre></div>
+
+<p>There you go, it's as easy as that. Now, let's test it out:</p>
+
+<div class="highlight highlight-python"><pre><span class="kn">from</span> <span class="nn">validator</span> <span class="kn">import</span> <span class="n">collection</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span> <span class="nn">some.path.in.your.app</span> <span class="kn">import</span> <span class="n">IsFoo</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">Collection</span><span class="p">()</span><span class="o">.</span><span class="n">append</span><span class="p">([</span>
+    <span class="n">field</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s">'field_name'</span><span class="p">,</span> <span class="s">'foo'</span><span class="p">)</span><span class="o">.</span><span class="n">append</span><span class="p">([</span>
+        <span class="n">IsFoo</span><span class="p">()</span>
+    <span class="p">])</span>
+<span class="p">])</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+
+<p>The validator will now check if <code>field_name</code> equals <code>foo</code>. The result of the validation is stored in <code>results</code>:</p>
+
+<div class="highlight highlight-python"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">results</span>
+<span class="bp">True</span>
+</pre></div>
+
+<p>Of course, setting <code>return_collated_results</code> to <code>True</code> in <code>Collection.run()</code> will return some more useful information:</p>
+
+<div class="highlight highlight-python"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">results</span>
+<span class="p">[{</span>
+    <span class="s">'field'</span><span class="p">:</span> <span class="s">'field_name'</span><span class="p">,</span>
+    <span class="s">'passed'</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="s">'value'</span><span class="p">:</span> <span class="s">'foo'</span>
+<span class="p">}]</span>
+</pre></div>
+
+<h2>
+<a name="unit-tests-usage" class="anchor" href="#unit-tests-usage"><span class="octicon octicon-link"></span></a>Unit Tests Usage</h2>
+
+<p>Tests have been made with the use of Nose (<a href="https://github.com/nose-devs/nose">https://github.com/nose-devs/nose</a>). Just navigate to the testing directory of choice run the <code>make test</code> command to run the entire suite.</p>
+
+<h2>
+<a name="questions" class="anchor" href="#questions"><span class="octicon octicon-link"></span></a>Questions</h2>
+
+<p>The best place to ask questions would be in the <code>Issues</code> section or on Twitter <a href="http://twitter.com/wilhelm">@wilhelm</a></p>
+
+<h2>
+<a name="contributions" class="anchor" href="#contributions"><span class="octicon octicon-link"></span></a>Contributions</h2>
+
+<p>A helping hand is always welcome. The current build includes a fair amount of built-in validation rules, but it could always use a few more. If you find what's available to be a bit lacking, feel free to fork and submit a pull request.</p>
+
+<p>All I ask is the following:</p>
+
+<ul>
+<li>Consistency. Try your best to follow the same coding style in use.</li>
+<li>Documentation. Document all the things!</li>
+<li>Tests. Please write functional and unit tests where and when possible.</li>
+</ul>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/wilhelm-murdoch">wilhelm-murdoch</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
