@@ -7,7 +7,7 @@ from version import __version__
 setup(
     name='validator',
     version=__version__,
-    description='A simple validation module.',
+    description='A plain-as-vanilla validating package written for Python.',
     author='Wilhelm Murdoch',
     author_email='wilhelm.murdoch@gmail.com',
     url='http://www.devilmayco.de/',
