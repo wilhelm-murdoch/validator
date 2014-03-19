@@ -176,6 +176,29 @@ If you want to return a JSON representation of your form, you can do the followi
 }
 ```
 
+You can also override a rule's default error message by specifiying your own:
+
+```python
+results = collection.Collection().append([
+    field.Field('field_name', 'foo').append([
+        IsEmail(error='Dude, seriously?')
+    ])
+]).run()
+```
+
+If you want quick access to any fields in your collection that contain errors:
+
+```python
+>>> print results.errors()
+{
+    'field_name': [
+        'Dude, seriously?'
+    ]
+}
+```
+
+These convenience methods become quite handy when you're using this library for JSON API error responses.
+
 ## Extending
 
 Writing your own rules is quite simple. You just have to make sure your own rules derive from class `validator.rule.Rule`. 

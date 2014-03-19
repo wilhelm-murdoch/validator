@@ -30,11 +30,21 @@ class Collection(object):
         return self.collated_results
 
     def form(self):
-        """ Returns a dictionary/object representing the current form. """
+        """ Returns a dict representing the current form in field:value pairs. """
         return {
             field.title:field.value
             for field in self.fields
         }
+
+    def errors(self):
+        """ Returns a dict containing only a map of fields with any 
+        corresponding errors or None if all rules passed.
+        """
+        return {
+            f['field']:f['errors']
+            for f in self.collated_results
+            if f['errors']
+        } or None
 
     def run(self, return_collated_results = False):
         """ Iterates through all associated Fields and applies all attached Rules. Depending on 'return_collated_results',
@@ -47,7 +57,7 @@ class Collection(object):
         self.collated_results = []
 
         passed = True
-        
+
         for field in self.fields:
             result, errors = field.run()
 

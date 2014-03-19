@@ -33,12 +33,14 @@ class CollectionTest(unittest.TestCase):
 
     def test_validator_pass(self):
         self.assertTrue(self.c.run())
+        self.assertIsNone(self.c.errors())
 
     def test_validator_pass_collated_results(self):
         r = self.c.run(True)
 
         self.assertTrue(type(r), dict)
         self.assertEquals(len(r), 4)
+        self.assertIsNone(self.c.errors())
 
         for f in r:
             self.assertTrue(f['passed'])
@@ -55,6 +57,19 @@ class CollectionTest(unittest.TestCase):
         r = self.c.run()
 
         self.assertFalse(r)
+
+    def test_validator_errors(self):
+        self.c.append(
+            field.Field('foo', 'bar').append(rules.IsLengthBetween(1, 1))
+        )
+
+        r = self.c.run(True)
+        e = self.c.errors()
+
+        self.assertEquals(type(e), dict)
+        self.assertIsNotNone(e['foo'])
+        self.assertTrue(len(e['foo']), 1)
+        self.assertEquals(e['foo'][0], 'String `bar` length is not within `1` and `1`')
 
     def test_validator_fail_collated_results(self):
         self.c.append(
