@@ -44,7 +44,10 @@ class Collection(object):
         Keyword arguments:
         return_collated_results bool -- Returns dictionary list of Field Rule collated results instead of True or False.
         """
+        self.collated_results = []
+
         passed = True
+        
         for field in self.fields:
             result, errors = field.run()
 
