@@ -45,7 +45,7 @@ class Regex(rule.Rule):
         pass_on_blank bool -- Pass through as success if field value is blank. (optional)
         """
         if not error:
-            error = "Expression `{}` failed when applied to `{}`"
+            error = "Could not match `{}` with expression `{}`"
         super(Regex, self).__init__(error, pass_on_blank)
         self.expression = expression
 
@@ -65,7 +65,7 @@ class Regex(rule.Rule):
             regex = re.compile(self.expression)
 
             if not regex.match(field_value):
-                self.error = self.error.format(self.expression, field_value)
+                self.error = self.error.format(field_value, self.expression)
                 return False
         except Exception, e:
             raise ValueError("Expression `{}` failed with the following error: {}".format(self.expression, e))
