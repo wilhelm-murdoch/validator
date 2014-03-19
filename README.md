@@ -164,6 +164,19 @@ If this form generated errors, you'd get the following output:
 ]
 ```
 
+If you want only a list of fields that failed validation and their associated error messages, you can use do:
+
+```python
+>>> print results.errors()
+{
+    'username': [
+        'heh.',
+        'lolwut?',
+        'It is either too long or too short, man.'
+    ]
+}
+```
+
 If you want to return a JSON representation of your form, you can do the following:
 
 ```python
@@ -175,29 +188,6 @@ If you want to return a JSON representation of your form, you can do the followi
     'email': 'wilhelm@gmail.com'
 }
 ```
-
-You can also override a rule's default error message by specifiying your own:
-
-```python
-results = collection.Collection().append([
-    field.Field('field_name', 'foo').append([
-        IsEmail(error='Dude, seriously?')
-    ])
-]).run()
-```
-
-If you want quick access to any fields in your collection that contain errors:
-
-```python
->>> print results.errors()
-{
-    'field_name': [
-        'Dude, seriously?'
-    ]
-}
-```
-
-These convenience methods become quite handy when you're using this library for JSON API error responses.
 
 ## Extending
 
