@@ -17,7 +17,7 @@ setup(
     url='http://www.devilmayco.de/',
     packages=find_packages(exclude=['tests', 'tests.*']),
     setup_requires=[
-          'nose==1.3.0'
-        , 'yanc==0.2.3'
+          'nose==1.3.1'
+        , 'yanc==0.2.4'
     ]
 )
