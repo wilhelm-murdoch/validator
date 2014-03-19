@@ -5,7 +5,7 @@ import re
 class Matches(rule.Rule):
     """ Simple rule used to determine whether one value matches another. Commonly used
     for password confirmation. """
-    def __init__(self, match, error = None, pass_on_blank = False):
+    def __init__(self, match, error=None, pass_on_blank=False):
         """ Constructor that instantiates a class instance and properties.
 
         Keyword arguments:
@@ -13,6 +13,9 @@ class Matches(rule.Rule):
         error str          -- A user-defined error messaged for a failed rule. (optional)
         pass_on_blank bool -- Pass through as success if field value is blank. (optional)
         """
+        if not error:
+            error = "Values `{}` and `{}` do not match."
+
         super(Matches, self).__init__(error, pass_on_blank)
         self.match = match
 
@@ -26,15 +29,14 @@ class Matches(rule.Rule):
             return True
 
         if self.match != field_value:
-            if not self.error:
-                self.error = "Values `%s` and `%s` do not match." % (field_value, self.match)
+            self.error = self.error.format(field_value, self.match)
             return False
         return True
 
 
 class Regex(rule.Rule):
     """ Applies a regular expression to a given field value. """
-    def __init__(self, expression, error = None, pass_on_blank = False):
+    def __init__(self, expression, error=None, pass_on_blank=False):
         """ Constructor that instantiates a class instance and properties.
 
         Keyword arguments:
@@ -42,6 +44,8 @@ class Regex(rule.Rule):
         error str          -- A user-defined error messaged for a failed rule. (optional)
         pass_on_blank bool -- Pass through as success if field value is blank. (optional)
         """
+        if not error:
+            error = "Expression `{}` failed when applied to `{}`"
         super(Regex, self).__init__(error, pass_on_blank)
         self.expression = expression
 
@@ -61,56 +65,57 @@ class Regex(rule.Rule):
             regex = re.compile(self.expression)
 
             if not regex.match(field_value):
-                if not self.error:
-                    self.error = "Expression `%s` failed when applied to `%s`" % (self.expression, field_value)
+                self.error = self.error.format(self.expression, field_value)
                 return False
         except Exception, e:
-            raise ValueError("Expression `%s` failed with the following error: %s" % (self.expression, e))
+            raise ValueError("Expression `{}` failed with the following error: {}".format(self.expression, e))
         return True
 
 
 class IsEmail(Regex):
     """ Regex convenience derivative class used to determine if given field value is a
     valid email address. """
-    def __init__(self, error = None, pass_on_blank = False):
-        super(IsEmail, self).__init__(r'^[a-zA-Z0-9._%-+]+@[a-zA-Z0-9._%-]+.[a-zA-Z]{2,6}$', error, pass_on_blank)
+    def __init__(self, error=None, pass_on_blank=False):
         if not error:
-            self.error = 'This is not a valid email address.'
+            error = 'This is not a valid email address.'
+        super(IsEmail, self).__init__(r'^[a-zA-Z0-9._%-+]+@[a-zA-Z0-9._%-]+.[a-zA-Z]{2,6}$', error, pass_on_blank)
 
 
 class IsNumeric(Regex):
     """ Regex convenience derivative class used to determine if given field value is numeric-only. """
-    def __init__(self, error = None, pass_on_blank = False):
-        super(IsNumeric, self).__init__(r'^[0-9]*$', error, pass_on_blank)
+    def __init__(self, error=None, pass_on_blank=False):
         if not error:
-            self.error = 'This is not a number.'
+            error = 'This is not a number.'
+        super(IsNumeric, self).__init__(r'^[0-9]*$', error, pass_on_blank)
 
 
 class IsAlpha(Regex):
     """ Regex convenience derivative class used to determine if given field value is alpha-only. """
-    def __init__(self, error = None, pass_on_blank = False):
-        super(IsAlpha, self).__init__(r'^[a-zA-Z]*$', error, pass_on_blank)
+    def __init__(self, error=None, pass_on_blank=False):
         if not error:
-            self.error = 'This is not an alpha-only string.'
+            error = 'This is not an alpha-only string.'
+        super(IsAlpha, self).__init__(r'^[a-zA-Z]*$', error, pass_on_blank)
 
 
 class IsAlphaNumeric(Regex):
     """ Regex convenience derivative class used to determine if given field value is alpha-numeric. """
-    def __init__(self, error = None, pass_on_blank = False):
-        super(IsAlphaNumeric, self).__init__(r'^[a-zA-Z0-9]*$', error, pass_on_blank)
+    def __init__(self, error=None, pass_on_blank=False):
         if not error:
-            self.error = 'This is not an alpha-numeric string.'
+            error = 'This is not an alpha-numeric string.'
+        super(IsAlphaNumeric, self).__init__(r'^[a-zA-Z0-9]*$', error, pass_on_blank)
 
 
 class IsRequired(rule.Rule):
     """ Used to determine if given field is empty. """
-    def __init__(self, error = None, pass_on_blank = False):
+    def __init__(self, error=None, pass_on_blank=False):
         """ Constructor that instantiates a class instance and properties.
 
         Keyword arguments:
         error str          -- A user-defined error messaged for a failed rule. (optional)
         pass_on_blank bool -- Pass through as success if field value is blank. (optional)
         """
+        if not error:
+            error = 'This field requires a value.'
         super(IsRequired, self).__init__(error, pass_on_blank)
 
     def run(self, field_value):
@@ -123,8 +128,6 @@ class IsRequired(rule.Rule):
             return True
 
         if not field_value:
-            if not self.error:
-                self.error = 'This field requires a value.'
             return False
         return True
 
@@ -132,7 +135,7 @@ class IsRequired(rule.Rule):
 class IsLength(rule.Rule):
     """ Used to determine whether the given associated field value's character length equals
     the given maximum amount. """
-    def __init__(self, length, strip = False, error = None, pass_on_blank = False):
+    def __init__(self, length, strip = False, error=None, pass_on_blank=False):
         """ Constructor that instantiates a class instance and properties.
 
         Keyword arguments:
@@ -141,6 +144,8 @@ class IsLength(rule.Rule):
         error str          -- A user-defined error messaged for a failed rule. (optional)
         pass_on_blank bool -- Pass through as success if field value is blank. (optional)
         """
+        if not error:
+            error = "String `{}` length does not equal `{}`"
         super(IsLength, self).__init__(error, pass_on_blank)
         self.length = int(length)
         self.strip = bool(strip)
@@ -155,8 +160,7 @@ class IsLength(rule.Rule):
             return True
 
         if len((field_value.strip() if self.strip else field_value)) != self.length:
-            if not self.error:
-                self.error = "String `%s` length does not equal `%d`" % (field_value, self.length)
+            self.error = self.error.format(field_value, self.length)
             return False
         return True
 
@@ -174,6 +178,8 @@ class IsLengthBetween(rule.Rule):
         error str          -- A user-defined error messaged for a failed rule. (optional)
         pass_on_blank bool -- Pass through as success if field value is blank. (optional)
         """
+        if not kwargs.get('error', None):
+            kwargs['error'] = "String `{}` length is not within `{}` and `{}`"
         super(IsLengthBetween, self).__init__(kwargs.get('error', None), kwargs.get('pass_on_blank', False))
         self.minimum = int(minimum)
         self.maximum = int(maximum)
@@ -191,15 +197,13 @@ class IsLengthBetween(rule.Rule):
         if self.minimum <= len((field_value.strip() if self.strip else field_value)) <= self.maximum:
             return True
 
-        if not self.error:
-            self.error = "String `%s` length is not within `%d` and `%d`" % (field_value, self.minimum, self.maximum)
-
+        self.error = self.error.format(field_value, self.minimum, self.maximum)
         return False
 
 
 class IsInList(rule.Rule):
     """ Used to determine if the associated field's value exists within the specified list. """
-    def __init__(self, given_list, strip = False, error = None, pass_on_blank = False):
+    def __init__(self, given_list, strip = False, error=None, pass_on_blank=False):
         """ Constructor that instantiates a class instance and properties.
 
         Keyword arguments:
@@ -208,6 +212,8 @@ class IsInList(rule.Rule):
         error str          -- A user-defined error messaged for a failed rule. (optional)
         pass_on_blank bool -- Pass through as success if field value is blank. (optional)
         """
+        if not error:
+            error = "Value of `{}` is not within the list"
         super(IsInList, self).__init__(error, pass_on_blank)
         self.given_list = given_list
         self.strip = strip
@@ -222,15 +228,14 @@ class IsInList(rule.Rule):
             return True
 
         if (field_value.strip() if self.strip else field_value) not in self.given_list:
-            if not self.error:
-                self.error = "Value of `%s` is not within the list" % field_value
+            self.error = self.error.format(field_value)
             return False
         return True
 
 
 class IsType(rule.Rule):
     """ Rule that compares the associated field's value against a specified data type. """
-    def __init__(self, asserted_type, error = None, pass_on_blank = False):
+    def __init__(self, asserted_type, error=None, pass_on_blank=False):
         """ Constructor that instantiates a class instance and properties.
 
         Keyword arguments:
@@ -238,6 +243,8 @@ class IsType(rule.Rule):
         error str           -- A user-defined error messaged for a failed rule. (optional)
         pass_on_blank bool  -- Pass through as success if field value is blank. (optional)
         """
+        if not error:
+            error = "Type of `{}` is not of type `{}`"
         super(IsType, self).__init__(error, pass_on_blank)
         self.asserted_type = asserted_type
 
@@ -251,7 +258,6 @@ class IsType(rule.Rule):
             return True
 
         if not isinstance(field_value, type(self.asserted_type)):
-            if not self.error:
-                self.error = "Type of `%s` is not of type `%s`" % (type(field_value), self.asserted_type)
+            self.error = self.error.format(type(field_value), self.asserted_type)
             return False
         return True

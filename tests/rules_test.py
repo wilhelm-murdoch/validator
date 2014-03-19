@@ -136,3 +136,12 @@ class RulesTest(unittest.TestCase):
 
         r = rules.IsType(t2).run(list())
         self.assertFalse(r)
+
+    def test_custom_error(self):
+        r = rules.IsType({})
+        self.assertEquals(r.error, "Type of `{}` is not of type `{}`")
+        
+        r = rules.IsType({}, error='custom')
+        self.assertFalse(r.run(True))
+        self.assertEquals(r.error, 'custom')
+        
