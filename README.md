@@ -189,6 +189,12 @@ If you want to return a JSON representation of your form, you can do the followi
 }
 ```
 
+Both classes `validator.collection.Collection` and `validator.rule.Rule` implement the following Python built-ins:
+
+* __len__
+* __iter__
+* __getitem__
+
 ## Extending
 
 Writing your own rules is quite simple. You just have to make sure your own rules derive from class `validator.rule.Rule`. 

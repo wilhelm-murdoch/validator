@@ -23,6 +23,19 @@ class CollectionTest(unittest.TestCase):
             ]),
         ])
 
+    def test_iterable(self):
+        for i, field in enumerate(self.c):
+            self.assertEquals(field.title, self.c.fields[i].title)
+
+    def test_len(self):
+        self.assertEquals(len(self.c), len(self.c.fields))
+
+    def test_getitem(self):
+        f1 = self.c[0]
+        f2 = self.c.fields[0]
+
+        self.assertEquals(f1.title, f2.title)
+
     def test_form(self):
         f = self.c.form()
         

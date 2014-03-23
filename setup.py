@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 __major__   = 2
 __minor__   = 0
-__patch__   = 5
+__patch__   = 6
 __version__ = '.'.join([str(__major__), str(__minor__), str(__patch__)])
 
 setup(

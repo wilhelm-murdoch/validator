@@ -3,6 +3,14 @@ from validator import field, rules
 import unittest
 
 class FieldTest(unittest.TestCase):
+    def setUp(self):
+        self.t = 'username'
+        self.v = 'wilhelm'
+        self.f = field.Field(self.t, self.v, False).append([
+              rules.IsRequired()
+            , rules.IsNumeric()
+        ])
+
     def test_single_rule_pass(self):
         f = 'username'
         v = 'wilhelm'
@@ -78,3 +86,16 @@ class FieldTest(unittest.TestCase):
         self.assertEquals(r[1][0], 'This is not a number.')
         self.assertEquals(r[1][1], 'String `{}` length is not within `{}` and `{}`'.format(v, mn, mx))
         self.assertEquals(len(r), 2)
+
+    def test_iterable(self):
+        for i, rule in enumerate(self.f):
+            self.assertEquals(type(rule), type(self.f.rules[i]))
+
+    def test_len(self):
+        self.assertEquals(len(self.f), len(self.f.rules))
+
+    def test_getitem(self):
+        r1 = self.f[0]
+        r2 = self.f.rules[0]
+
+        self.assertEquals(type(r1), type(r2))

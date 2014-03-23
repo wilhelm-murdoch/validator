@@ -25,6 +25,19 @@ class Collection(object):
         self.fields.append(_field)
         return self
 
+    def __iter__(self):
+        """ Returns generator to iterate through assigned fields. """
+        for rule in self.fields:
+            yield rule
+
+    def __len__(self):
+        """ Implements built-in len() to return number of assigned fields. """
+        return len(self.fields)
+
+    def __getitem__(self, i):
+        """ Allows for self[key] access. Will raise IndexError if out of range. """
+        return self.fields[i]
+
     def results(self):
         """ Returns the collated results for the current collection instance. """
         return self.collated_results

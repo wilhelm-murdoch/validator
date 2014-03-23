@@ -16,6 +16,19 @@ class Field(object):
         self.value = value
         self.stop_on_first_error = stop_on_first_error
 
+    def __iter__(self):
+        """ Returns generator to iterate through assigned rules. """
+        for rule in self.rules:
+            yield rule
+
+    def __len__(self):
+        """ Implements built-in len() to return number of assigned rules. """
+        return len(self.rules)
+
+    def __getitem__(self, i):
+        """ Allows for self[key] access. Will raise IndexError if out of range. """
+        return self.rules[i]
+
     def append(self, _rule):
         """ Attaches an instance of class Rule to the current instance of this Field
 
