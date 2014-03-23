@@ -1,4 +1,4 @@
-[![Build Status](https://drone.io/github.com/wilhelm-murdoch/Validator/status.png)](https://drone.io/github.com/wilhelm-murdoch/Validator/latest) [![Code Health](https://landscape.io/github/wilhelm-murdoch/Validator/master/landscape.png)](https://landscape.io/github/wilhelm-murdoch/Validator/master)
+[![Build Status](https://drone.io/github.com/wilhelm-murdoch/Validator/status.png)](https://drone.io/github.com/wilhelm-murdoch/Validator/latest) [![Code Health](https://landscape.io/github/wilhelm-murdoch/validator/master/landscape.png)](https://landscape.io/github/wilhelm-murdoch/validator/master)
 
 ### Validator
 ===
