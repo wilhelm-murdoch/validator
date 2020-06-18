@@ -1,8 +1,4 @@
-[![Build Status](https://drone.io/github.com/wilhelm-murdoch/Validator/status.png)](https://drone.io/github.com/wilhelm-murdoch/Validator/latest) [![Code Health](https://landscape.io/github/wilhelm-murdoch/validator/master/landscape.png)](https://landscape.io/github/wilhelm-murdoch/validator/master)
-
-### Validator
-===
-
+# Validator
 I wrote this because I could not find a validation for Python that didn't require some crazy dependencies, or wasn't plain simple to work with. This does precisely what the title suggests; it makes it easier to manage input validation in Python.
 
 There are a handful of other validation libraries out there, but they are all either dated or require you to work your head around some strange syntax. This is the package you want to use when you don't want waste precious time thinking about how the validator should work; it's all in plain English.
